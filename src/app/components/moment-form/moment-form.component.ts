@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Moment } from 'src/app/models/moment';
 
 @Component({
   selector: 'app-moment-form',
@@ -7,7 +8,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./moment-form.component.css']
 })
 export class MomentFormComponent implements OnInit {
- @Input() btnText!: string;
+@Output() onSubmit = new EventEmitter<Moment>();
+@Input() btnText!: string;
 
  momentForm!: FormGroup;
 
@@ -33,12 +35,21 @@ export class MomentFormComponent implements OnInit {
   return this.momentForm.get("description")!;
  }
 
+
+ onFileSelected(event: any){
+  const file: File = event.target.files[0];
+  this.momentForm.patchValue({ image: file })
+ }
+
  submit(){
 
   // Verfica se o formulario esta invalido, caso esteja ele retorna a invalid e nao faz o envio.
     if(this.momentForm.invalid){
       return;
     }
+
+    console.log(this.momentForm.value);
+    this.onSubmit.emit(this.momentForm.value);
  }
 
 }
