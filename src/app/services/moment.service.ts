@@ -20,6 +20,7 @@ export class MomentService {
 
   getMoments(): Observable<Response<Moment[]>> {
     return this.http.get<Response<Moment[]>>(this.apiUrl);
+    //teste commit
   }
 
   getMoment(id: number): Observable<Response<Moment>> {
